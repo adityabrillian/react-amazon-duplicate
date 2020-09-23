@@ -1,8 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import './Home.css';
 import Product from './Product';
+import { Skeleton } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/core/styles';
 
-export default function Home() {
+const useStyles = makeStyles((theme) => ({
+    product: {
+        minWidth: 100,
+        maxHeight: 400,
+        margin: theme.spacing(2),
+        display: 'flex',
+    },
+    image: {
+        maxHeight: 200,
+    },
+}));
+
+export default function Home(props) {
+    const { loading = false } = props;
+    const classes = useStyles();
+
     return (
         <div className="home">
             <div className="home__container">
@@ -13,13 +32,57 @@ export default function Home() {
                 />
                 <div className="home__row">
                     <Product
+                        className={classes.product}
                         id="2132132141"
-                        title="The lean startup"
-                        price={200}
-                        image="https://images-na.ssl-images-amazon.com/images/I/51Zymoq7UnL._AC_SY400_.jpg"
-                        rating={3}
+                        title={
+                            loading ? (
+                                <Skeleton
+                                    animation="wave"
+                                    height={10}
+                                    width="80%"
+                                    style={{ marginBottom: 6 }}
+                                />
+                            ) : (
+                                'The lean startup'
+                            )
+                        }
+                        price={
+                            loading ? (
+                                <Skeleton
+                                    animation="wave"
+                                    height={10}
+                                    width="40%"
+                                    style={{ marginBottom: 6 }}
+                                />
+                            ) : (
+                                200
+                            )
+                        }
+                        image={
+                            loading ? (
+                                <Skeleton
+                                    variant="rect"
+                                    width={210}
+                                    height={118}
+                                />
+                            ) : (
+                                'https://images-na.ssl-images-amazon.com/images/I/51Zymoq7UnL._AC_SY400_.jpg'
+                            )
+                        }
+                        rating={
+                            loading ? (
+                                <Skeleton
+                                    animation="wave"
+                                    height={10}
+                                    width="80%"
+                                />
+                            ) : (
+                                3
+                            )
+                        }
                     />
                     <Product
+                        className={classes.product}
                         id="1232132141"
                         title="Kenwood kMix Stand Mixer"
                         price={110}
@@ -30,6 +93,7 @@ export default function Home() {
 
                 <div className="home__row">
                     <Product
+                        className={classes.product}
                         id="1234132141"
                         title="FitBit band"
                         price={292}
@@ -37,6 +101,7 @@ export default function Home() {
                         rating={3}
                     />
                     <Product
+                        className={classes.product}
                         id="1233332141"
                         title="Amazon Echo"
                         price={344}
@@ -44,6 +109,7 @@ export default function Home() {
                         rating={5}
                     />
                     <Product
+                        className={classes.product}
                         id="1232132123"
                         title="New Apple iPad Pro"
                         price={500}
@@ -54,6 +120,7 @@ export default function Home() {
 
                 <div className="home__row">
                     <Product
+                        className={classes.product}
                         id="1112132141"
                         title="Samsung LED Monitor"
                         price={630}
@@ -65,3 +132,7 @@ export default function Home() {
         </div>
     );
 }
+
+Home.propTypes = {
+    loading: PropTypes.bool,
+};

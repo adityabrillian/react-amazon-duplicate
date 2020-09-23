@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import './App.css';
 import Header from './Header';
@@ -13,12 +13,16 @@ import { useStateValue } from './StateProvider';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
+// CUSTOM by Adityabrillian
+
 const promise = loadStripe(
     'pk_test_51HR3uNGG5vk8W9E0LHALYvdXlVa7oar7N1yRTm2h3EgyeXUi2LjH1abfrtVRwzexBzoT6hhctPidf793pVEr0IJb00vZd2KHdH'
 );
 
 function App() {
     const [{}, dispatch] = useStateValue();
+    const [blog, setBlog] = useState([]);
+    const [loading, setLoading] = useState([]);
 
     useEffect(() => {
         // will only run once when the app component loads
@@ -40,6 +44,12 @@ function App() {
                 });
             }
         });
+
+        setLoading(true);
+        const timing = setTimeout(() => {
+            setLoading(false);
+        }, 4000);
+        return() => clearTimeout(timing)
     }, []);
 
     return (
@@ -66,7 +76,8 @@ function App() {
                     </Route>
                     <Route path="/">
                         <Header />
-                        <Home />
+                        {loading && <Home loading/>}
+                        {!loading && <Home/>}
                     </Route>
                 </Switch>
             </div>
